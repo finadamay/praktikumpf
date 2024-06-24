@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use PDF;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use App\Models\Employee;
 use App\Models\Position;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Exports\EmployeesExport;
-use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
-use Illuminate\Support\Facades\Validator;
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\EmployeesExport;
+use PDF;
 
 class EmployeeController extends Controller
 {
@@ -23,12 +23,11 @@ class EmployeeController extends Controller
     public function index()
     {
         $pageTitle = 'Employee List';
-
-        // ELOQUENT
-        $employees = Employee::all();
-        return view('employee.index', [
-        'pageTitle' => $pageTitle,
-        'employees' => $employees
+        confirmDelete();
+        $positions = Position::all();
+        return view('employee.index',[
+               'pageTitle' => $pageTitle,
+               'positions' => $positions
         ]);
     }
 
@@ -91,6 +90,8 @@ class EmployeeController extends Controller
 
         $employee->save();
 
+        Alert::success('Changed Successfully', 'Employee Data Changed Successfully.');
+
         return redirect()->route('employees.index');
 
     }
@@ -149,6 +150,8 @@ class EmployeeController extends Controller
         $employee->position_id = $request->position;
         $employee->save();
 
+        Alert::success('Changed Successfully', 'Employee Data Changed Successfully.');
+
         return redirect()->route('employees.index');
     }
 
@@ -159,6 +162,8 @@ class EmployeeController extends Controller
     {
         // ELOQUENT
         Employee::find($id)->delete();
+
+        Alert::success('Changed Successfully', 'Employee Data Changed Successfully.');
 
         return redirect()->route('employees.index');
     }
@@ -171,7 +176,36 @@ class EmployeeController extends Controller
 
         if(Storage::exists($encryptedFilename)) {
             return Storage::download($encryptedFilename, $downloadFilename);
+        }
     }
-}
+
+    public function getData(Request $request)
+    {
+        $employees = Employee::with('position');
+
+        if ($request->ajax()) {
+            return datatables()->of($employees)
+                ->addIndexColumn()
+                ->addColumn('actions', function($employee) {
+                    return view('employee.actions', compact('employee'));
+                })
+                ->toJson();
+        }
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new EmployeesExport, 'employees.xlsx');
+    }
+
+    public function exportPdf()
+    {
+        $employees = Employee::all();
+
+        $pdf = PDF::loadView('employee.export_pdf', compact('employees'));
+
+        return $pdf->download('employees.pdf');
+    }
+
 
 }
