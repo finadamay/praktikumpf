@@ -9,7 +9,7 @@
         </div>
         <div class="col-lg-3 col-xl-2">
             <div class="d-grid gap-2">
-                <a href="{{ route('employees.create') }}" class="btn btn-primary">Create Employee</a>
+                <a href="{{ route('employees.create') }}" class="btnbtn-primary">Create Employee</a>
             </div>
         </div>
     </div>
