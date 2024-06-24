@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Employee;
 
 class EmployeeSeeder extends Seeder
 {
@@ -13,7 +14,7 @@ class EmployeeSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('employees')->insert([
+        /* DB::table('employees')->insert([
             [
             'firstname' => 'Purnama',
             'lastname' => 'Anaking',
@@ -35,6 +36,8 @@ class EmployeeSeeder extends Seeder
             'age' => 23,
             'position_id' => 3
             ],
-        ]);
+        ]); */
+
+        Employee::factory()->count(10)->create();
     }
 }

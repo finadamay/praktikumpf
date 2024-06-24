@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Position;
 
 class PositionSeeder extends Seeder
 {
@@ -13,7 +14,7 @@ class PositionSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('positions')->insert([
+        /* DB::table('positions')->insert([
             [
             'code' => 'FE',
             'name' => 'Front End Developer',
@@ -29,6 +30,8 @@ class PositionSeeder extends Seeder
             'name' => 'System Analist',
             'description' => 'System Analist'
             ],
-        ]);
+        ]); */
+
+        Position::factory()->count(5)->create();
     }
 }

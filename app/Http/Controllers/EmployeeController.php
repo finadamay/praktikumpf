@@ -47,28 +47,46 @@ class EmployeeController extends Controller
             'required' => ':Attribute harus diisi.',
             'email' => 'Isi :attribute dengan format yang benar',
             'numeric' => 'Isi :attribute dengan angka'
-            ];
-            $validator = Validator::make($request->all(), [
+        ];
+
+        $validator = Validator::make($request->all(), [
             'firstName' => 'required',
             'lastName' => 'required',
             'email' => 'required|email',
             'age' => 'required|numeric',
-            ], $messages);
+        ], $messages);
 
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        // Get File
+        $file = $request->file('cv');
 
-            // ELOQUENT
-            $employee = New Employee;
-            $employee->firstname = $request->firstName;
-            $employee->lastname = $request->lastName;
-            $employee->email = $request->email;
-            $employee->age = $request->age;
-            $employee->position_id = $request->position;
-            $employee->save();
+        if ($file != null) {
+            $originalFilename = $file->getClientOriginalName();
+            $encryptedFilename = $file->hashName();
 
-            return redirect()->route('employees.index');
+            // Store File
+            $file->store('public/files');
+        }
+
+        // ELOQUENT
+        $employee = New Employee;
+        $employee->firstname = $request->firstName;
+        $employee->lastname = $request->lastName;
+        $employee->email = $request->email;
+        $employee->age = $request->age;
+        $employee->position_id = $request->position;
+
+        if ($file != null) {
+            $employee->original_filename = $originalFilename;
+            $employee->encrypted_filename = $encryptedFilename;
+        }
+
+        $employee->save();
+
+        return redirect()->route('employees.index');
+
     }
 
     /**

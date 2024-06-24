@@ -11,32 +11,35 @@
                 <hr>
                 <div class="row">
                     <div class="col-md-12 mb-3">
-                        <label for="firstName" class="form-label">FirstName</label>
+                        <label for="firstName" class="form-label">First
+                            Name</label>
                         <h5>{{ $employee->firstname }}</h5>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label for="lastName" class="form-label">Last Name</label>
+                        <label for="lastName" class="form-label">Last
+                            Name</label>
                         <h5>{{ $employee->lastname }}</h5>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label for="email" class="formlabel">Email</label>
+                        <label for="email" class="form-label">Email</label>
                         <h5>{{ $employee->email }}</h5>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label for="age" class="form-label">Age</label><h5>{{ $employee->age }}</h5>
+                        <label for="age" class="form-label">Age</label>
+                        <h5>{{ $employee->age }}</h5>
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label for="age" class="formlabel">Position</label>
+                        <label for="age" class="form-label">Position</label>
                         <h5>{{ $employee->position->name }}</h5>
                     </div>
                 </div>
                 <hr>
                 <div class="row">
                     <div class="col-md-12 d-grid">
-                        <a href="{{ route('employees.index') }}" class="btn btn-outline-dark btn-lg mt-3"><i class="bi-arrow-left-circleme-2"></i> Back</a>
+                        <a href="{{ route('employees.index') }}" class="btn btn-outline-dark btn-lg mt-3"><i class="bi-arrow-left-circle me-2"></i> Back</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @endsection
+@endsection
